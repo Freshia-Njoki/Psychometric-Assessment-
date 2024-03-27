@@ -8,6 +8,7 @@ const {verifyAuth} = require('../middleware/auth')
 const questionsController = require('../controllers/questionsController')
 const { validateSubmission } = require('../middleware/validation');
 const { submitAssessment } = require('../controllers/assessmentController');
+const { calculateScoresAndRecommendations } = require('../controllers/score$Recommendation');
 
 routerManager.post('/register', createUser)
 routerManager.get('/adminLogin',adminLogin)
@@ -26,6 +27,9 @@ routerManager.delete('/deleteQuestion/:id', questionsController.deleteQuestion);
 
 // Route to submit assessment responses
 routerManager.post('/submit', validateSubmission, submitAssessment);
+
+// Calculate scores and recommend learning tracks
+routerManager.post('/results', calculateScoresAndRecommendations);
 
 module.exports = { routerManager }
 

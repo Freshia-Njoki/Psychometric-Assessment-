@@ -15,7 +15,6 @@ exports.submitAssessment = async (req, res) => {
     });
 
     // Calculate score and check correctness of each response
-    // Calculate score and check correctness of each response
 let score = 0;
 const result = responses.map(response => {
   const { questionId, answer } = response;
