@@ -1,27 +1,25 @@
-const {pool} = require('../model/dbPool');
+const { pool } = require('../model/dbPool');
 
 // Get all questions
 exports.getAllQuestions = (req, res) => {
   try {
     const query = "SELECT * FROM questions";
-  pool.query(query, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: 'Error retrieving questions' });
-    }
-    res.json(results);
-  });
-    
+    pool.query(query, (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error retrieving questions' });
+      }
+      res.json(results);
+    });
   } catch (error) {
     console.log(error);
-    
   }
 };
 
 // Create a new question
 exports.createQuestion = (req, res) => {
-  const { question_text, option1, option2, option3, option4, correct_option, category } = req.body;
-  const query = "INSERT INTO questions (question_text, option1, option2, option3, option4, correct_option, category) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  pool.query(query, [question_text, option1, option2, option3, option4, correct_option, category], (err, result) => {
+  const { image_path, question_text, option1, option2, option3, option4, correct_option, category } = req.body;
+  const query = "INSERT INTO questions (image_path, question_text, option1, option2, option3, option4, correct_option, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  pool.query(query, [image_path, question_text, option1, option2, option3, option4, correct_option, category], (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ error: 'Error creating question' });
@@ -48,9 +46,9 @@ exports.getQuestionById = (req, res) => {
 // Update a question
 exports.updateQuestion = (req, res) => {
   const { id } = req.params;
-  const { question_text, option1, option2, option3, option4, correct_option, category } = req.body;
-  const query = "UPDATE questions SET question_text = ?, option1 = ?, option2 = ?, option3 = ?, option4 = ?, correct_option = ?, category = ? WHERE question_id = ?";
-  pool.query(query, [question_text, option1, option2, option3, option4, correct_option, category, id], (err, result) => {
+  const { image_path, question_text, option1, option2, option3, option4, correct_option, category } = req.body;
+  const query = "UPDATE questions SET image_path = ?, question_text = ?, option1 = ?, option2 = ?, option3 = ?, option4 = ?, correct_option = ?, category = ? WHERE question_id = ?";
+  pool.query(query, [image_path, question_text, option1, option2, option3, option4, correct_option, category, id], (err, result) => {
     if (err) {
       return res.status(500).json({ error: 'Error updating question' });
     }

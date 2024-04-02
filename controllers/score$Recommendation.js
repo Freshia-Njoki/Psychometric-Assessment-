@@ -12,11 +12,11 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     // Initialize scores for different cognitive abilities
     let mathScore = 0;
     let logicalScore = 0;
-    let opennessScore = 0;
-    let conscientiousnessScore = 0;
-    let emotionalStabilityScore = 0;
-    let agreeablenessAssertivenessScore = 0;
-    let creativityScore = 0;
+    // let opennessScore = 0;
+    // let conscientiousnessScore = 0;
+    // let emotionalStabilityScore = 0;
+    // let agreeablenessAssertivenessScore = 0;
+    // let creativityScore = 0;
 
     // Calculate scores
     responses.forEach(response => {

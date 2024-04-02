@@ -20,6 +20,7 @@ const result = responses.map(response => {
   const { questionId, answer } = response;
   // Retrieve the correct option using the question ID provided by the user
   const correctOption = correctAnswers[questionId]; // Use questionId instead of row.question_id
+  console.log(`Question ID: ${questionId}, Answer: ${answer}, Correct Option: ${correctOption}`);
   const isCorrect = answer === correctOption;
   if (isCorrect) {
     score++;

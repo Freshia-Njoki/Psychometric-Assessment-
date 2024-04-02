@@ -9,9 +9,10 @@ const questionsController = require('../controllers/questionsController')
 const { validateSubmission } = require('../middleware/validation');
 const { submitAssessment } = require('../controllers/assessmentController');
 const { calculateScoresAndRecommendations } = require('../controllers/score$Recommendation');
+const { calculateMathScoresAndRecommendations } = require('../controllers/mathaptitude');
 
 routerManager.post('/register', createUser)
-routerManager.get('/adminLogin',adminLogin)
+routerManager.get('/adminLogin', adminLogin)
 routerManager.get('/showApplicants', showApplicants)
 routerManager.post('/adminRegister', createAdmin)
 // routerManager.get('/showAdmin', showAdmin)
@@ -29,7 +30,8 @@ routerManager.delete('/deleteQuestion/:id', questionsController.deleteQuestion);
 routerManager.post('/submit', validateSubmission, submitAssessment);
 
 // Calculate scores and recommend learning tracks
-routerManager.post('/results', calculateScoresAndRecommendations);
+routerManager.get('/results', calculateScoresAndRecommendations);
+routerManager.post('/math', calculateMathScoresAndRecommendations);
 
 module.exports = { routerManager }
 
