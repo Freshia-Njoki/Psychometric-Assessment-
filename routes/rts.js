@@ -22,7 +22,7 @@ routerManager.post('/adminRegister', createAdmin)
 routerManager.get('/getAllQuestions', questionsController.getAllQuestions);
 routerManager.post('/createQuestion', questionsController.createQuestion);
 routerManager.get('/getQuestionById/:id', questionsController.getQuestionById);
-routerManager.put('/updateQuestion/:id', questionsController.updateQuestion);
+routerManager.patch('/updateQuestion/:id', questionsController.updateQuestion);
 routerManager.delete('/deleteQuestion/:id', questionsController.deleteQuestion);
 
 // Route to submit assessment responses

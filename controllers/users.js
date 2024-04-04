@@ -7,16 +7,15 @@ const users = {
 }
 
 const adminLogin = (req, res) => {
-    const { userName, password } = req.body; // Assuming userName and password are sent in the request body
+    const { userName, password } = req.body;
 
     // If userName or password is not provided in the request, use default credentials
     if (!userName || !password) {
-        const token = jwt.sign(users, secret); // Using default credentials
+        const token = jwt.sign(users, secret);
         console.log(token);
         return res.send({ token });
     }
 
-    // Check if the provided credentials match the default credentials
     if (userName === users.userName && password === users.password) {
         const token = jwt.sign({ userName }, secret);
         console.log(token);

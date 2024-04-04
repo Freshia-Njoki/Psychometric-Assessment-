@@ -19,7 +19,7 @@ let score = 0;
 const result = responses.map(response => {
   const { questionId, answer } = response;
   // Retrieve the correct option using the question ID provided by the user
-  const correctOption = correctAnswers[questionId]; // Use questionId instead of row.question_id
+  const correctOption = correctAnswers[questionId];
   console.log(`Question ID: ${questionId}, Answer: ${answer}, Correct Option: ${correctOption}`);
   const isCorrect = answer === correctOption;
   if (isCorrect) {
@@ -27,12 +27,6 @@ const result = responses.map(response => {
   }
   return { questionId, answer, correctOption, isCorrect };
 });
-
-
-    // Store submission data in the database if needed
-    // Example: Save userId, responses, and score in a submissions table
-
-    // Return the result and score
     res.json({ result, score });
   } catch (error) {
     console.error("Error submitting assessment:", error);

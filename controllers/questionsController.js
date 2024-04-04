@@ -62,6 +62,7 @@ exports.deleteQuestion = (req, res) => {
   const query = "DELETE FROM questions WHERE question_id = ?";
   pool.query(query, [id], (err, result) => {
     if (err) {
+      console.log(err);
       return res.status(500).json({ error: 'Error deleting question' });
     }
     res.json({ message: 'Question deleted successfully' });

@@ -8,12 +8,9 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     if (!Array.isArray(responses) || responses.length === 0) {
       throw new Error("Invalid responses data.");
     }
-
-    // Retrieve questions from the database
     const query = "SELECT question_id, selected_option, category FROM questions";
     const [rows, fields] = await pool.query(query);
 
-    // Initialize scores for each category
     let opennessScore = 0;
     let conscientiousnessScore = 0;
     let emotionalStabilityScore = 0;
