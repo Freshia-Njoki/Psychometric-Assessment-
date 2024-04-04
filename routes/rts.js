@@ -30,7 +30,7 @@ routerManager.post('/submit', validateSubmission, submitAssessment);
 
 // Calculate scores and recommend learning tracks
 // routerManager.post('/math', calculateMathScoresAndRecommendations);
-routerManager.post('/results', calculateScoresAndRecommendations);
+routerManager.post('/scores-recommendations', calculateScoresAndRecommendations);
 routerManager.post('/math-logic-scores-recommendation', calculateMathLogicScoresAndRecommendations);
 
 module.exports = { routerManager }

@@ -1,55 +1,30 @@
 const { pool } = require('../model/dbPool');
 
-const getCorrectOption = (questions, questionId) => {
-  const question = questions.find(q => q.question_id === questionId);
-  return question ? question.correct_option : null;
-};
-
-// Calculate scores and recommend learning tracks for all categories
 exports.calculateScoresAndRecommendations = async (req, res) => {
   try {
     const { userId, responses } = req.body;
 
-    if (!Array.isArray(responses)) {
-      throw new Error("Responses field is missing or not an array.");
+    // Validation of responses
+    if (!Array.isArray(responses) || responses.length === 0) {
+      throw new Error("Invalid responses data.");
     }
 
-    if (responses.length === 0) {
-      throw new Error("Responses array is empty.");
-    }
-
-    const query = "SELECT question_id, correct_option, category FROM questions";
+    // Retrieve questions from the database
+    const query = "SELECT question_id, selected_option, category FROM questions";
     const [rows, fields] = await pool.query(query);
 
-    let mathScore = 0;
-    let logicalScore = 0;
+    // Initialize scores for each category
     let opennessScore = 0;
     let conscientiousnessScore = 0;
     let emotionalStabilityScore = 0;
     let agreeablenessAssertivenessScore = 0;
-    let creativityScore = 0;
-
+    let imaginationScore = 0;
+    let technicalAptitudeScore = 0;
+    let skillsAssessmentScore = 0;
+    // Calculate scores for each category based on selected options
     responses.forEach(response => {
-      const { questionId, answer, selectedOption } = response;
+      const { questionId, selectedOption } = response;
       const category = getCategory(rows, questionId);
-      
-      // Retrieve the correct option for the question
-      const correctOption = getCorrectOption(rows, questionId);
-      console.log(`Question ID: ${questionId}, Answer: ${answer}, Correct Option: ${correctOption}`);
-
-      if (correctOption !== null) {
-        const parsedAnswer = answer.toString();
-        const parsedCorrectOption = correctOption.toString();
-
-        // Use strict comparison to compare parsed values
-        if (parsedAnswer === parsedCorrectOption) {
-          if (category === 'Mathematical Aptitude' || category === 'Logical Reasoning') {
-            mathScore++;
-          }
-        }
-      } else {
-        console.error(`Correct option not found for question ID ${questionId}`);
-      }
 
       switch (category) {
         case 'Openness':
@@ -64,28 +39,45 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
         case 'Agreeableness/Assertiveness':
           agreeablenessAssertivenessScore += calculateAgreeablenessAssertivenessScore(selectedOption);
           break;
-        case 'Creativity':
-          creativityScore += calculateCreativityScore(selectedOption);
+        case 'Imagination':
+          imaginationScore += calculateImaginationScore(selectedOption);
+          break;
+        case 'Technical Aptitude':
+          technicalAptitudeScore += calculateTechnicalAptitudeScore(selectedOption);
+          break;
+        case 'Skills Assessment':
+          skillsAssessmentScore += calculateSkillsAssessmentScore(selectedOption);
           break;
         default:
           break;
       }
     });
 
-    const mathLearningTrack = recommendLearningTrack(mathScore, 'Mathematical Aptitude');
-    const logicalLearningTrack = recommendLearningTrack(logicalScore, 'Logical Reasoning');
+    // Recommend learning tracks for each category based on scores
     const opennessLearningTrack = recommendLearningTrack(opennessScore, 'Openness');
     const conscientiousnessLearningTrack = recommendLearningTrack(conscientiousnessScore, 'Conscientiousness');
     const emotionalStabilityLearningTrack = recommendLearningTrack(emotionalStabilityScore, 'Emotional Stability');
     const agreeablenessAssertivenessLearningTrack = recommendLearningTrack(agreeablenessAssertivenessScore, 'Agreeableness/Assertiveness');
-    const creativityLearningTrack = recommendLearningTrack(creativityScore, 'Creativity');
+    const imaginationLearningTrack = recommendLearningTrack(imaginationScore, 'Imagination');
+    const technicalAptitudeLearningTrack = recommendLearningTrack(technicalAptitudeScore, 'Technical Aptitude');
+    const skillsAssessmentLearningTrack = recommendLearningTrack(skillsAssessmentScore, 'Skills Assessment');
 
+    // Send response with scores and recommended learning tracks
     res.json({
-      mathScore, logicalScore, opennessScore, conscientiousnessScore,
-      emotionalStabilityScore, agreeablenessAssertivenessScore, creativityScore,
-      mathLearningTrack, logicalLearningTrack, opennessLearningTrack,
-      conscientiousnessLearningTrack, emotionalStabilityLearningTrack,
-      agreeablenessAssertivenessLearningTrack, creativityLearningTrack
+      opennessScore,
+      conscientiousnessScore,
+      emotionalStabilityScore,
+      agreeablenessAssertivenessScore,
+      imaginationScore,
+      technicalAptitudeScore,
+      skillsAssessmentScore,
+      opennessLearningTrack,
+      conscientiousnessLearningTrack,
+      emotionalStabilityLearningTrack,
+      agreeablenessAssertivenessLearningTrack,
+      imaginationLearningTrack,
+      technicalAptitudeLearningTrack,
+      skillsAssessmentLearningTrack
     });
   } catch (error) {
     console.error("Error calculating scores:", error);
@@ -93,6 +85,7 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
   }
 };
 
+// Helper function to get category of a question
 function getCategory(questions, questionId) {
   const question = questions.find(q => q.question_id === questionId);
   return question ? question.category : null;
@@ -103,8 +96,8 @@ function calculateOpennessScore(selectedOption) {
     'A': 2,
     'B': 1,
     'C': 0,
-    'D': 1,
-    'E': 2
+    'D': 0,
+    'E': 0
   };
   return optionScores[selectedOption];
 }
@@ -114,8 +107,8 @@ function calculateConscientiousnessScore(selectedOption) {
     'A': 2,
     'B': 1,
     'C': 0,
-    'D': -1,
-    'E': -2
+    'D': 0,
+    'E': 0
   };
   return optionScores[selectedOption];
 }
@@ -125,7 +118,7 @@ function calculateEmotionalStabilityScore(selectedOption) {
     'A': 2,
     'B': 1,
     'C': 0,
-    'D': -1
+    'D': 0
   };
   return optionScores[selectedOption];
 }
@@ -135,13 +128,13 @@ function calculateAgreeablenessAssertivenessScore(selectedOption) {
     'A': 2,
     'B': 1,
     'C': 0,
-    'D': -1,
-    'E': -2
+    'D': 0,
+    'E': 0
   };
   return optionScores[selectedOption];
 }
 
-function calculateCreativityScore(selectedOption) {
+function calculateImaginationScore(selectedOption) {
   const optionScores = {
     'A': 2,
     'B': 1,
@@ -150,12 +143,28 @@ function calculateCreativityScore(selectedOption) {
   return optionScores[selectedOption];
 }
 
+function calculateTechnicalAptitudeScore(selectedOption) {
+  const optionScores = {
+    'A': 2,
+    'B': 1,
+    'C': 0
+  };
+  return optionScores[selectedOption];
+}
+
+function calculateSkillsAssessmentScore(selectedOption) {
+  const optionScores = {
+    'A': 2,
+    'B': 1,
+    'C': 0,
+    'D': 0,
+    'E': 0
+  };
+  return optionScores[selectedOption];
+}
+
 function recommendLearningTrack(score, category) {
   switch (category) {
-    case 'Mathematical Aptitude':
-      return score >= 1 ? "Recommended learning track for Mathematical Aptitude" : "No recommendation for Mathematical Aptitude";
-    case 'Logical Reasoning':
-      return score >= 1 ? "Recommended learning track for Logical Reasoning" : "No recommendation for Logical Reasoning";
     case 'Openness':
       return recommendOpennessLearningTrack(score);
     case 'Conscientiousness':
@@ -164,32 +173,34 @@ function recommendLearningTrack(score, category) {
       return recommendEmotionalStabilityLearningTrack(score);
     case 'Agreeableness/Assertiveness':
       return recommendAgreeablenessAssertivenessLearningTrack(score);
-    case 'Creativity':
-      return recommendCreativityLearningTrack(score);
+    case 'Imagination':
+      return recommendImaginationLearningTrack(score);
+      case 'Imagination':
+      return recommendTechnicalAptitudeLearningTrack(score);
+      case 'Imagination':
+      return recommendSkillsAssessmentLearningTrack(score);
     default:
       return "No recommendation available";
   }
 }
 
 function recommendOpennessLearningTrack(score) {
-  if (score >= 4) {
-    return "Recommended learning track for Openness: Innovative Solutions Developer";
-  } else if (score >= 2) {
-    return "Recommended learning track for Openness: Creative Problem Solver";
-  } else if (score >= 0) {
-    return "Recommended learning track for Openness: Collaborative Innovator";
+  if (score >= 2) {
+    return "Recommended learning track for Openness: Software Development, Blockchain, Mobile App Development, Cyber Security, Data Science";
+  } else if (score >= 1) {
+    return "Recommended learning track for Openness: 3D Animation, Product Design";
   } else {
-    return "Recommended learning track for Openness: Structured Thinker";
+    return "Recommended learning track for Openness: Product Management, Mobile App Development";
   }
 }
 
 function recommendConscientiousnessLearningTrack(score) {
   if (score >= 2) {
-    return "Recommended learning track for Conscientiousness: Project Manager";
-  } else if (score >= 0) {
-    return "Recommended learning track for Conscientiousness: Quality Assurance Analyst";
+    return "Recommended learning track for Conscientiousness: Software Development, Blockchain, 3D Animation, Product Design";
+  } else if (score >= 1) {
+    return "Recommended learning track for Conscientiousness: Product Management, Mobile App Development";
   } else {
-    return "Recommended learning track for Conscientiousness: Flexible Scheduler";
+    return "Recommended learning track for Conscientiousness: Cyber Security, Data Science, Software Development, Mobile App Development";
   }
 }
 
@@ -197,13 +208,13 @@ function recommendConscientiousnessLearningTrack(score) {
 function recommendEmotionalStabilityLearningTrack(score) {
   switch (score) {
     case 'A':
-      return "Recommended learning track for Emotional Stability: Product Manager";
+      return "Recommended learning track for Emotional Stability: Product Management, Data Science, Software Development, Blockchain, Mobile App Development";
     case 'B':
-      return "Recommended learning track for Emotional Stability: Software Developer";
+      return "Recommended learning track for Emotional Stability: Software Development, Mobile App Development, 3D Animation, Product Design";
     case 'C':
-      return "Recommended learning track for Emotional Stability: UI/UX Designer";
+      return "Recommended learning track for Emotional Stability: Software Development, Product Design, Product Management, Mobile App Development";
     case 'D':
-      return "Recommended learning track for Emotional Stability: Cybersecurity Analyst";
+      return "Recommended learning track for Emotional Stability: Cyber Security, Blockchain Engineering, Data Science";
     default:
       return "No recommendation available";
   }
@@ -212,24 +223,43 @@ function recommendEmotionalStabilityLearningTrack(score) {
 function recommendAgreeablenessAssertivenessLearningTrack(score) {
   switch (score) {
     case 'A':
-      return "Recommended learning track for Agreeableness/Assertiveness: Team Collaboration Specialist";
+      return "Recommended learning track for Agreeableness/Assertiveness: Product Management, Product Design, Cyber Security, Blockchain Engineering, Software Development, Mobile App Development";
     case 'B':
-      return "Recommended learning track for Agreeableness/Assertiveness: Cybersecurity Consultant";
+      return "Recommended learning track for Agreeableness/Assertiveness: Mobile App Development, Software Development";
     case 'C':
-      return "Recommended learning track for Agreeableness/Assertiveness: Software Engineer";
+      return "Recommended learning track for Agreeableness/Assertiveness: 3D Animation, Data Science";
     case 'D':
-      return "Recommended learning track for Agreeableness/Assertiveness: Data Analyst";
+      return "Recommended learning track for Agreeableness/Assertiveness: 3D Animation, Data Science";
     default:
       return "No recommendation available";
   }
 }
 
-function recommendCreativityLearningTrack(score) {
+function recommendImaginationLearningTrack(score) {
   if (score >= 2) {
-    return "Recommended learning track for Creativity: Graphic Design";
+      return "Recommended learning track for Imagination: Mobile App Development, Blockchain,  3D Animation";
   } else if (score >= 1) {
-    return "Recommended learning track for Creativity: User Experience (UX) Design";
+      return "Recommended learning track for Imagination: Product Design, Mobile App Development,  3D Animation,  Product Management, Software Development";
   } else {
-    return "No recommendation available for Creativity";
+      return "Recommended learning track for Imagination:  Product Management, Blockchain, Game Development,  Data Science";
   }
 }
+
+function recommendTechnicalAptitudeLearningTrack(score) {
+  if (score >= 2) {
+    return "Recommended learning track for TechnicalAptitude: Software Development, Blockchain, 3D Animation, Product Design, Mobile App Development";
+  } else if (score >= 1) {
+    return "Recommended learning track for TechnicalAptitude: User Experience (UX) Design";
+  } else {
+    return "Recommended learning track for TechnicalAptitude: Cyber Security, Data Science, Product Management, Mobile App Development";
+  }
+}
+  function recommendSkillsAssessmentLearningTrack(score) {
+    if (score >= 2) {
+      return "Recommended learning track for SkillsAssessment: Software Development, Product Management, Mobile App Development";
+    } else if (score >= 1) {
+      return "Recommended learning track for SkillsAssessment: 3D Animation Skills, Product Design,";
+    } else {
+      return "Recommendation available for SkillsAssessment: Cyber Security, Data Science";
+    }
+  }

@@ -46,14 +46,12 @@ const recommendMathLearningTrack = (mathScore) => {
   let learningTrack = '';
 
   // Map math score to learning tracks
-  if (mathScore >= 8) {
-    learningTrack = 'Software Development, Data Science, Blockchain';
-  } else if (mathScore >= 6) {
-    learningTrack = 'Software Development, Mobile App Development';
+  if (mathScore >= 7) {
+    learningTrack = 'Mobile App, Product Management, Cyber Security, Data Science';
   } else if (mathScore >= 4) {
-    learningTrack = 'Product Management, Web Development';
-  } else if (mathScore >= 1) {
-    learningTrack = 'Product Design, Cyber Security,  3D Animation Skills';
+    learningTrack = 'Software Development, Blockchain, Mobile Application';
+  } else {
+    learningTrack = ' 3D Animation Skills, Product Design';
   }
 
   return learningTrack;
@@ -64,14 +62,12 @@ const recommendLogicalLearningTrack = (logicalScore) => {
   let learningTrack = '';
 
   // Map logical reasoning score to learning tracks
-  if (logicalScore >= 8) {
-    learningTrack = 'Software Engineering, Data Analysis, Research';
-  } else if (logicalScore >= 6) {
-    learningTrack = 'Software Engineering, System Architecture';
+  if (logicalScore >= 7) {
+    learningTrack = 'Software Development, Blockchain, Cyber Security, Data Science';
   } else if (logicalScore >= 4) {
-    learningTrack = 'Project Management, Quality Assurance';
-  } else if (logicalScore >= 1) {
-    learningTrack = 'Technical Writing, UI/UX Design';
+    learningTrack = '3D Animation Skills, Product Design, Software Development, Mobile Application';
+  } else {
+    learningTrack = 'Mobile App, Product Management';
   }
 
   return learningTrack;
