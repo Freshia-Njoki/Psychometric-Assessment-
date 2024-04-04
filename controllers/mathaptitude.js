@@ -18,8 +18,8 @@ exports.calculateMathScoresAndRecommendations = async (req, res) => {
       const correctOption = getCorrectOption(rows, questionId);
       console.log(`Question ID: ${questionId}, Answer: ${answer}, Correct Option: ${correctOption}`);
       
-      // Parse the answer appropriately to match the correct option
-      if (answer && correctOption !== null && parseAnswer(answer) === correctOption) {
+      // Compare answers as strings without parsing
+      if (answer && correctOption && answer.toString() === correctOption.toString()) {
         mathScore++;
       }
     });
@@ -33,15 +33,6 @@ exports.calculateMathScoresAndRecommendations = async (req, res) => {
     console.error("Error calculating mathematical aptitude scores and recommendations:", error);
     res.status(500).json({ error: 'Error calculating mathematical aptitude scores and recommendations' });
   }
-};
-
-// Helper function to parse different types of answers
-const parseAnswer = (answer) => {
-  // Remove non-numeric characters and parse to integer
-  const parsedAnswer = parseInt(answer.replace(/\D/g, ''));
-
-  // If the parsed answer is a valid number, return it; otherwise, return null
-  return isNaN(parsedAnswer) ? null : parsedAnswer;
 };
 
 // Helper function to recommend learning track based on mathematical aptitude score
@@ -63,5 +54,5 @@ const recommendMathLearningTrack = (mathScore) => {
 // Helper function to get the correct option for a question
 const getCorrectOption = (rows, questionId) => {
   const question = rows.find(row => row.question_id === questionId);
-  return question ? parseInt(question.correct_option) : null;
+  return question ? question.correct_option : null;
 };

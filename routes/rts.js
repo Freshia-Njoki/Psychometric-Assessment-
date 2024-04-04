@@ -30,7 +30,7 @@ routerManager.delete('/deleteQuestion/:id', questionsController.deleteQuestion);
 routerManager.post('/submit', validateSubmission, submitAssessment);
 
 // Calculate scores and recommend learning tracks
-routerManager.get('/results', calculateScoresAndRecommendations);
+routerManager.post('/results', calculateScoresAndRecommendations);
 routerManager.post('/math', calculateMathScoresAndRecommendations);
 
 module.exports = { routerManager }
