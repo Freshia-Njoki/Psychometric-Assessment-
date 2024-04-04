@@ -27,7 +27,7 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
       const category = getCategory(rows, questionId);
 
       switch (category) {
-        case 'Openness':
+        case 'Openness to Experience':
           opennessScore += calculateOpennessScore(selectedOption);
           break;
         case 'Conscientiousness':
@@ -36,7 +36,7 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
         case 'Emotional Stability':
           emotionalStabilityScore += calculateEmotionalStabilityScore(selectedOption);
           break;
-        case 'Agreeableness/Assertiveness':
+        case 'Agreeableness vs. Assertiveness':
           agreeablenessAssertivenessScore += calculateAgreeablenessAssertivenessScore(selectedOption);
           break;
         case 'Imagination':
@@ -54,10 +54,10 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     });
 
     // Recommend learning tracks for each category based on scores
-    const opennessLearningTrack = recommendLearningTrack(opennessScore, 'Openness');
+    const opennessLearningTrack = recommendLearningTrack(opennessScore, 'Openness to Experience');
     const conscientiousnessLearningTrack = recommendLearningTrack(conscientiousnessScore, 'Conscientiousness');
     const emotionalStabilityLearningTrack = recommendLearningTrack(emotionalStabilityScore, 'Emotional Stability');
-    const agreeablenessAssertivenessLearningTrack = recommendLearningTrack(agreeablenessAssertivenessScore, 'Agreeableness/Assertiveness');
+    const agreeablenessAssertivenessLearningTrack = recommendLearningTrack(agreeablenessAssertivenessScore, 'Agreeableness vs. Assertiveness');
     const imaginationLearningTrack = recommendLearningTrack(imaginationScore, 'Imagination');
     const technicalAptitudeLearningTrack = recommendLearningTrack(technicalAptitudeScore, 'Technical Aptitude');
     const skillsAssessmentLearningTrack = recommendLearningTrack(skillsAssessmentScore, 'Skills Assessment');
