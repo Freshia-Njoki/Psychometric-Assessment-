@@ -4,19 +4,18 @@ const {createUser,showApplicants, details} = require('../controllers/ctl')
 const {createAdmin} = require('../controllers/admin')
 const {adminLogin} = require('../controllers/users')
 const {verifyAuth} = require('../middleware/auth')
-// const {mid} = require('../middleware/middleware')
 const questionsController = require('../controllers/questionsController')
 const { validateSubmission } = require('../middleware/validation');
 const { submitAssessment } = require('../controllers/assessmentController');
 const { calculateScoresAndRecommendations } = require('../controllers/score$Recommendation');
-const { calculateMathScoresAndRecommendations } = require('../controllers/mathaptitude');
+// const { calculateMathScoresAndRecommendations } = require('../controllers/mathaptitude');
+const { calculateMathLogicScoresAndRecommendations } = require('../controllers/MathLogicScoresAndRecom');
 
 routerManager.post('/register', createUser)
 routerManager.get('/adminLogin', adminLogin)
 routerManager.get('/showApplicants', showApplicants)
 routerManager.post('/adminRegister', createAdmin)
 // routerManager.get('/showAdmin', showAdmin)
-// routerManager.get('/questions', questions)
 // routerManager.get('/details',verifyAuth, details)
 
 // Routes for managing assessment questions
@@ -30,8 +29,9 @@ routerManager.delete('/deleteQuestion/:id', questionsController.deleteQuestion);
 routerManager.post('/submit', validateSubmission, submitAssessment);
 
 // Calculate scores and recommend learning tracks
+// routerManager.post('/math', calculateMathScoresAndRecommendations);
 routerManager.post('/results', calculateScoresAndRecommendations);
-routerManager.post('/math', calculateMathScoresAndRecommendations);
+routerManager.post('/math-logic-scores-recommendation', calculateMathLogicScoresAndRecommendations);
 
 module.exports = { routerManager }
 
