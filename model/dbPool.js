@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+require('dotenv').config()
 const pool = mysql.createPool({
     connectionLimit:10,
     host:'bomly9vaod29f7smwubk-mysql.services.clever-cloud.com',

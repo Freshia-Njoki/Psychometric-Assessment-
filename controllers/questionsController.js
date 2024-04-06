@@ -1,70 +1,108 @@
 const { pool } = require('../model/dbPool');
 
 // Get all questions
-exports.getAllQuestions = (req, res) => {
+exports.getAllQuestions = async (req, res) => {
   try {
-    const query = "SELECT * FROM questions";
-    pool.query(query, (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error retrieving questions' });
-      }
-      res.json(results);
-    });
+    const sql = "SELECT * FROM questions";
+    const [rows] = await pool.execute(sql)
+
+    if (rows) {
+      // console.log(rows);
+      return res.json(rows);
+    }
+    ;
   } catch (error) {
     console.log(error);
   }
 };
 
 // Create a new question
-exports.createQuestion = (req, res) => {
-  const { image_path, question_text, option1, option2, option3, option4, correct_option, category } = req.body;
-  const query = "INSERT INTO questions (image_path, question_text, option1, option2, option3, option4, correct_option, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-  pool.query(query, [image_path, question_text, option1, option2, option3, option4, correct_option, category], (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: 'Error creating question' });
-    }
-    res.status(201).json({ message: 'Question created successfully', id: result.insertId });
-  });
+exports.createQuestion = async (req, res) => {
+  try {
+    const { image_path, question_text, option1, option2, option3, option4, correct_option, category } = req.body;
+  const sql = "INSERT INTO questions (image_path, question_text, option1, option2, option3, option4, correct_option, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  const values = [image_path, question_text, option1, option2, option3, option4, correct_option, category]
+  const [rows] = await pool.execute(sql, values)
+
+  if (rows) {
+    console.log(rows);
+    return res.status(200).json({ msg: 'Question created successfully' });
+  } else {
+    return res.status(500).json({ error: "error creating question" })
+  }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 // Get a question by ID
-exports.getQuestionById = (req, res) => {
-  const { id } = req.params;
-  const query = "SELECT * FROM questions WHERE question_id = ?";
-  pool.query(query, [id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: 'Error retrieving question' });
-    }
-    if (!result || result.length === 0) {
-      return res.status(404).json({ error: 'Question not found' });
-    }
-    res.json(result[0]);
-  });
+exports.getQuestionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+  const sql = "SELECT * FROM questions WHERE question_id = ?";
+  const values = [id];
+  const [rows] = await pool.execute(sql, values);
+  if (!rows || rows.length === 0) {
+    return res.status(404).json({ error: 'Question not found' });
+  }
+  if (rows) {
+    // console.log(rows);
+    return res.status(200).json({ question : rows });
+  } else {
+    return res.status(500).json({ error: 'Error retrieving question' });
+  }
+    
+  } catch (error) {
+    console.log(error);
+  return res.status(500).json({ error: 'Internal server error' });
+    
+    
+  }
+ 
+  
 };
 
 // Update a question
-exports.updateQuestion = (req, res) => {
-  const { id } = req.params;
-  const { image_path, question_text, option1, option2, option3, option4, correct_option, category } = req.body;
-  const query = "UPDATE questions SET image_path = ?, question_text = ?, option1 = ?, option2 = ?, option3 = ?, option4 = ?, correct_option = ?, category = ? WHERE question_id = ?";
-  pool.query(query, [image_path, question_text, option1, option2, option3, option4, correct_option, category, id], (err, result) => {
-    if (err) {
+exports.updateQuestion = async(req, res) => {
+  try {
+    const { id } = req.params;
+  const { image_path, question_text, option1, option2, option3, category } = req.body;
+  if (!image_path || !question_text || !option1 || !option2 || !option3 || !category) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+  const query = "UPDATE questions SET image_path = ?, question_text = ?, option1 = ?, option2 = ?, option3 = ?, category = ? WHERE question_id = ?";
+  const values = [image_path, question_text, option1, option2, option3, category, id]
+  // console.log(id);
+
+  const [rows] = await pool.execute(query, values)
+    if (rows) {
+      return res.json({ message: 'Question updated successfully' });
+    } else {
       return res.status(500).json({ error: 'Error updating question' });
     }
-    res.json({ message: 'Question updated successfully' });
-  });
+    
+  } catch (error) {
+    console.error('Error updating question:', error);
+    return res.status(500).json({ error: error.message });
+    
+  }
+  
 };
 
 // Delete a question
-exports.deleteQuestion = (req, res) => {
-  const { id } = req.params;
+exports.deleteQuestion = async(req, res) => {
+  try {
+    const { id } = req.params;
   const query = "DELETE FROM questions WHERE question_id = ?";
-  pool.query(query, [id], (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: 'Error deleting question' });
+  const values = [id]
+  const [rows] = await pool.execute(query, values )
+    if (rows) {
+      console.log(rows);
+      res.json({ message: 'Question deleted successfully' });
     }
-    res.json({ message: 'Question deleted successfully' });
-  });
+    return res.status(500).json({ error: 'Error deleting question' });
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -6,7 +6,6 @@ const createAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check if the password is provided
     if (!password) {
       return res.status(400).json({ error: 'Password is required' });
     }
@@ -17,14 +16,15 @@ const createAdmin = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const sql = 'INSERT INTO Admin (Username, Email, Password) VALUES (?, ?, ?)';
-    pool.query(sql, [name, email, hashedPassword], (err, result) => {
-      if (err) {
-        console.error('Error creating admin:', err);
-        res.status(500).json({ error: 'Internal server error' });
-      } else {
-        res.status(200).json({ message: 'Admin created successfully' });
-      }
-    });
+    //convert json object to an array - helps prevent SQL injections
+    const values = [name, email, password];
+    const [rows] = await pool.execute(sql, values);
+    if(rows){
+      return res.status(200).json({msg : "Admin created successfully"})
+    } else {
+      console.log("error occurred while creating admin");
+      return res.status(500).json({msg:"error creating admin"})
+    }
   } catch (error) {
     console.error('Error creating admin:', error);
     res.status(500).json({ error: 'Internal server error' });
