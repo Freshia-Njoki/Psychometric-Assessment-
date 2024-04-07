@@ -13,7 +13,7 @@ const { calculateScoresAndRecommendations } = require('../controllers/score$Reco
 const { calculateMathLogicScoresAndRecommendations } = require('../controllers/MathLogicScoresAndRecom');
 
 routerManager.post('/register', createUser)
-routerManager.get('/adminLogin', adminLogin)
+routerManager.post('/adminLogin', adminLogin)
 routerManager.get('/showApplicants', showApplicants)
 routerManager.post('/adminRegister', createAdmin)
 

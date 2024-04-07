@@ -6,9 +6,9 @@ const createAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    if (!password) {
-      return res.status(400).json({ error: 'Password is required' });
-    }
+    // if (!password) {
+    //   return res.status(400).json({ error: 'Password is required' });
+    // }
 
     // Log the password before hashing
     console.log('Password before hashing:', password);
