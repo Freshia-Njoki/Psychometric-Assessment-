@@ -2,10 +2,10 @@ const mysql = require('mysql2/promise');
 require('dotenv').config()
 const pool = mysql.createPool({
     connectionLimit:10,
-    host:'bomly9vaod29f7smwubk-mysql.services.clever-cloud.com',
-    user:'umwbdzyqdnulexem',
-    password:'GYhcTCLySUEMMmdToHCk',
-    database:'bomly9vaod29f7smwubk',
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DB,
 })
 
 const s_users = "select * from Applicant";
