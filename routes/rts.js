@@ -1,7 +1,7 @@
 const express = require('express');
 const routerManager = express.Router();
-const {createUser,showApplicants} = require('../controllers/applicantController')
-const {createAdmin} = require('../controllers/admin')
+const {createUser,showApplicants, applicantLogin} = require('../controllers/applicantController')
+const {createAdmin, } = require('../controllers/admin')
 const {adminLogin} = require('../controllers/adminLogin')
 const {verifyAuth} = require('../middleware/auth')
 const questionsController = require('../controllers/questionsController')
@@ -13,6 +13,7 @@ const { calculateScoresAndRecommendations } = require('../controllers/score$Reco
 const { calculateMathLogicScoresAndRecommendations } = require('../controllers/MathLogicScoresAndRecom');
 
 routerManager.post('/register', createUser)
+routerManager.post('/applicantLogin', applicantLogin)
 routerManager.post('/adminLogin', adminLogin)
 routerManager.get('/showApplicants', showApplicants)
 routerManager.post('/adminRegister', createAdmin)
