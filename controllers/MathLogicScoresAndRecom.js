@@ -3,7 +3,7 @@ const { pool } = require('../model/dbPool');
 // Calculate scores and recommend learning tracks for mathematical aptitude and logical reasoning
 exports.calculateMathLogicScoresAndRecommendations = async (req, res) => {
   try {
-    const { userId, responses } = req.body;
+    const { userName, responses } = req.body;
     const query = "SELECT question_id, correct_option, category FROM questions WHERE category IN ('Mathematical Aptitude', 'Logical Reasoning')";
     const [rows, fields] = await pool.query(query);
 

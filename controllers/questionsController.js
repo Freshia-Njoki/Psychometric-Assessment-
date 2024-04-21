@@ -19,9 +19,9 @@ exports.getAllQuestions = async (req, res) => {
 // Create a new question
 exports.createQuestion = async (req, res) => {
   try {
-    const { image_path, question_text, option1, option2, option3, option4, correct_option, category } = req.body;
-  const sql = "INSERT INTO questions (image_path, question_text, option1, option2, option3, option4, correct_option, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-  const values = [image_path, question_text, option1, option2, option3, option4, correct_option, category]
+    const { image_path, question_text, option1, option2, option3, option4, correct_option, category, questionNo } = req.body;
+  const sql = "INSERT INTO questions (image_path, question_text, option1, option2, option3, option4, correct_option, category, questionNo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const values = [image_path, question_text, option1, option2, option3, option4, correct_option, category, questionNo]
   const [rows] = await pool.execute(sql, values)
 
   if (rows) {

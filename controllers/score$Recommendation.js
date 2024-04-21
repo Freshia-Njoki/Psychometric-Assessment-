@@ -2,7 +2,7 @@ const { pool } = require('../model/dbPool');
 
 exports.calculateScoresAndRecommendations = async (req, res) => {
   try {
-    const { userId, responses } = req.body;
+    const { userName, responses } = req.body;
 
     // Validation of responses
     if (!Array.isArray(responses) || responses.length === 0) {

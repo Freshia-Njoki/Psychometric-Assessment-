@@ -2,7 +2,7 @@ const { pool } = require('../model/dbPool');
 
 exports.submitAssessment = async (req, res) => {
   try {
-    const { userId, responses } = req.body;
+    const { userName, responses } = req.body;
 
     // Retrieve correct answers from the database
     const query = "SELECT question_id, correct_option FROM questions";
