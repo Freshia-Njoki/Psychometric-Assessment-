@@ -11,6 +11,7 @@ const { submitAssessment } = require('../controllers/assessmentController');
 const { calculateScoresAndRecommendations } = require('../controllers/score$Recommendation');
 // const { calculateMathScoresAndRecommendations } = require('../controllers/mathaptitude');
 const { calculateMathLogicScoresAndRecommendations } = require('../controllers/MathLogicScoresAndRecom');
+const { Feedback, getAllFeedback } = require('../controllers/feedbackController');
 
 routerManager.post('/register', createUser)
 routerManager.post('/applicantLogin', applicantLogin)
@@ -38,6 +39,9 @@ routerManager.post('/submit', validateSubmission, submitAssessment);
 // routerManager.post('/math', calculateMathScoresAndRecommendations);
 routerManager.post('/scores-recommendations', calculateScoresAndRecommendations);
 routerManager.post('/math-logic-scores-recommendation', calculateMathLogicScoresAndRecommendations);
+
+routerManager.post('/feedback', Feedback);
+routerManager.get('/getAllFeedbacks', getAllFeedback);
 
 module.exports = { routerManager }
 

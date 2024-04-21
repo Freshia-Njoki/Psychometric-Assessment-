@@ -90,91 +90,133 @@ function getCategory(questions, questionId) {
 
 function calculateOpennessScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0,
-    'D': 0,
-    'E': 0
+    'Strongly Agree': 2,
+    'Agree': 1.5,
+    'Neutral': 1,
+    'Disagree': 0.5,
+    'Strongly Disagree': 0
   };
   return optionScores[selectedOption];
 }
 
 function calculateConscientiousnessScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0,
-    'D': 0,
-    'E': 0
+    'Strongly Agree': 2,
+    'Agree': 1.5,
+    'Neutral': 1,
+    'Disagree': 0.5,
+    'Strongly Disagree': 0
   };
   return optionScores[selectedOption];
 }
 
 function calculateEmotionalStabilityScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0,
-    'D': 0
+    'Remain calm and focused, finding effective solutions.': 2,
+    'Stay composed but may feel the pressure.': 1.5,
+    'Sometimes feel overwhelmed, but manage to cope.': 1,
+    'Often feel stressed and struggle to cope.': 0.5
   };
   return optionScores[selectedOption];
 }
 
 function calculateAgreeablenessAssertivenessScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0,
-    'D': 0,
-    'E': 0
+    'Strongly Agree': 2,
+    'Agree': 1.5,
+    'Neutral': 1,
+    'Disagree': 0.5,
+    'Strongly Disagree': 0,
+    'Actively seek resolutions and compromises.': 2,
+    'Attempt to find a middle ground.': 1.5,
+    'Tend to go along with the majority opinions.': 1,
+    'Prefer to avoid conflicts.': 0
+
   };
   return optionScores[selectedOption];
 }
 
 function calculateImaginationScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0
+    'Develop a mobile app that rewards users for recycling.': 2,
+    'Redesign recycling bins to make them more visually appealing.': 1.5,
+    'Create a marketing campaign emphasizing the environmental benefits.': 1,
+    'Implement blockchain in supply chain management for product authenticity.': 1.5,
+    'Develop a blockchain-based voting system for secure elections.': 2,
+    'Create an app for tracking the origin of organic food using blockchain.': 1,
+    'The character can change shape at will, adding an element of surprise.': 2,
+    'Give the character a distinctive and expressive facial feature.': 1.5,
+    'Incorporate a captivating backstory that players can explore': 1,
+    'Develop a mobile app that optimizes smart home device usage.': 1.5,
+    'Create a software program that learns user preferences and adjusts settings accordingly.': 1,
+    'Design a product that harvests renewable energy for smart home devices.': 2,
+    'Develop a gamified mobile app for interactive learning.': 1.5,
+    'Create an online platform that adapts to each learner.': 2,
+    'Use data analytics to identify optimal learning paths for individuals': 1
+
   };
   return optionScores[selectedOption];
 }
 
 function calculateTechnicalAptitudeScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0
+    'Very comfortable, I enjoy exploring new software.': 2,
+    'Somewhat comfortable, but I prefer familiar tools.': 1,
+    'Not very comfortable, I struggle with new technology': 0.5,
+    "Yes, I''ve created and customized programs or websites.": 2,
+    "I've dabbled a bit but not extensively.": 1.5,
+    "No, I haven't tried coding or web development.": 0,
+    "I'm quite skilled at resolving technical problems.": 2,
+    "I can manage some issues but prefer not to.": 1,
+    'I find it challenging and usually seek help.': 0,
+    "Absolutely, I love taking things apart and learning how they function.": 2,
+    "I'm curious but don't often delve deeply into it.": 1,
+    "Not particularly, I'm more interested in using technology.": 0.5,
+    'I dive right in, experiment, and figure it out': 2,
+    'I research and seek help if needed but try to solve it myself.': 1.5,
+    'I usually ask someone else to handle it.': 0
   };
   return optionScores[selectedOption];
 }
 
 function calculateSkillsAssessmentScore(selectedOption) {
   const optionScores = {
-    'A': 2,
-    'B': 1,
-    'C': 0,
-    'D': 0,
-    'E': 0
+    'Novice': 0,
+    'Basic': 0.5,
+    'Intermediate': 1,
+    'Advanced': 2,
+    'Expert': 2,
+    'Unfamiliar': 0,
+    'Proficient': 1.5,
+    'Highly Proficient': 2,
+    'Very comfortable': 2,
+    'Moderately comfortable': 1,
+    'Not comfortable': 0,
+    "Yes, I'm experienced.": 2,
+    "I have some experience.": 1,
+    "No, I'm not skilled in this area.": 0,
+    'Very confident': 2,
+    'Moderately confident': 1,
+    'Not confident': 0,
   };
   return optionScores[selectedOption];
 }
 
 function recommendLearningTrack(score, category) {
   switch (category) {
-    case 'Openness':
+    case 'Openness to Experience':
       return recommendOpennessLearningTrack(score);
     case 'Conscientiousness':
       return recommendConscientiousnessLearningTrack(score);
     case 'Emotional Stability':
       return recommendEmotionalStabilityLearningTrack(score);
-    case 'Agreeableness/Assertiveness':
+    case 'Agreeableness vs. Assertiveness':
       return recommendAgreeablenessAssertivenessLearningTrack(score);
     case 'Imagination':
       return recommendImaginationLearningTrack(score);
-      case 'Imagination':
+    case 'Technical Aptitude':
       return recommendTechnicalAptitudeLearningTrack(score);
-      case 'Imagination':
+    case 'Skills Assessment':
       return recommendSkillsAssessmentLearningTrack(score);
     default:
       return "No recommendation available";
@@ -183,80 +225,107 @@ function recommendLearningTrack(score, category) {
 
 function recommendOpennessLearningTrack(score) {
   if (score >= 2) {
-    return "Recommended learning track for Openness: Software Development, Blockchain, Mobile App Development, Cyber Security, Data Science";
+    return "Recommended learning track for Openness: Software Development, Blockchain";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for Openness:  Mobile App Development";
   } else if (score >= 1) {
-    return "Recommended learning track for Openness: 3D Animation, Product Design";
-  } else {
-    return "Recommended learning track for Openness: Product Management, Mobile App Development";
+    return "Recommended learning track for Openness: Cyber Security";
+  } else if (score >= 0.5) {
+    return "Recommended learning track for Openness: Data Science";
+  }
+  else {
+    return "Recommended learning track for Openness: Product Management";
   }
 }
 
+
 function recommendConscientiousnessLearningTrack(score) {
   if (score >= 2) {
-    return "Recommended learning track for Conscientiousness: Software Development, Blockchain, 3D Animation, Product Design";
+    return "Recommended learning track for Conscientiousness: Software Development, Blockchain";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for Conscientiousness: 3D Animation";
   } else if (score >= 1) {
-    return "Recommended learning track for Conscientiousness: Product Management, Mobile App Development";
-  } else {
-    return "Recommended learning track for Conscientiousness: Cyber Security, Data Science, Software Development, Mobile App Development";
+    return "Recommended learning track for Conscientiousness: Product Design";
+  } else if (score >= 0.5) {
+    return "Recommended learning track for Conscientiousness: Product Design";
+  }
+  else {
+    return "Recommended learning track for Conscientiousness: Cyber Security";
   }
 }
 
 
 function recommendEmotionalStabilityLearningTrack(score) {
-  switch (score) {
-    case 'A':
-      return "Recommended learning track for Emotional Stability: Product Management, Data Science, Software Development, Blockchain, Mobile App Development";
-    case 'B':
-      return "Recommended learning track for Emotional Stability: Software Development, Mobile App Development, 3D Animation, Product Design";
-    case 'C':
-      return "Recommended learning track for Emotional Stability: Software Development, Product Design, Product Management, Mobile App Development";
-    case 'D':
-      return "Recommended learning track for Emotional Stability: Cyber Security, Blockchain Engineering, Data Science";
-    default:
-      return "No recommendation available";
+
+  if (score >= 2) {
+    return "Recommended learning track for Emotional Stability: Product Management, Data Science";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for Emotional Stability: Software Development";
+  } else if (score >= 1) {
+    return "Recommended learning track for Emotional Stability: Blockchain";
+  } else if (score >= 0.5) {
+    return "Recommended learning track for Emotional Stability: Mobile App Development";
+  }
+  else {
+    return "No recommendation available";
   }
 }
 
 function recommendAgreeablenessAssertivenessLearningTrack(score) {
-  switch (score) {
-    case 'A':
-      return "Recommended learning track for Agreeableness/Assertiveness: Product Management, Product Design, Cyber Security, Blockchain Engineering, Software Development, Mobile App Development";
-    case 'B':
-      return "Recommended learning track for Agreeableness/Assertiveness: Mobile App Development, Software Development";
-    case 'C':
-      return "Recommended learning track for Agreeableness/Assertiveness: 3D Animation, Data Science";
-    case 'D':
-      return "Recommended learning track for Agreeableness/Assertiveness: 3D Animation, Data Science";
-    default:
-      return "No recommendation available";
+  if (score >= 2) {
+    return "Recommended learning track for Agreeableness/Assertiveness: Product Management, Product Design";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for Agreeableness/Assertiveness: Software Development,Mobile App Development, ";
+  } else if (score >= 1) {
+    return "Recommended learning track for Agreeableness/Assertiveness: Data Science";
+  } else if (score >= 0.5) {
+    return "Recommended learning track for Agreeableness/Assertiveness: 3D Animation";
+  } else {
+    return "No recommendation available";
   }
 }
 
 function recommendImaginationLearningTrack(score) {
   if (score >= 2) {
-      return "Recommended learning track for Imagination: Mobile App Development, Blockchain,  3D Animation";
+    return "Recommended learning track for Imagination: Mobile App Development, Blockchain,  ";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for Imagination: Software Development";
   } else if (score >= 1) {
-      return "Recommended learning track for Imagination: Product Design, Mobile App Development,  3D Animation,  Product Management, Software Development";
-  } else {
-      return "Recommended learning track for Imagination:  Product Management, Blockchain, Game Development,  Data Science";
+    return "Recommended learning track for Imagination: Product Management";
+  }
+  else if (score >= 0.5) {
+    return "Recommended learning track for Imagination: 3D Animation";
+  }
+  else {
+    return "Recommended learning track for Imagination:  Game Development";
   }
 }
 
 function recommendTechnicalAptitudeLearningTrack(score) {
   if (score >= 2) {
-    return "Recommended learning track for TechnicalAptitude: Software Development, Blockchain, 3D Animation, Product Design, Mobile App Development";
+    return "Recommended learning track for TechnicalAptitude: Software Development, Blockchain";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for TechnicalAptitude: Mobile App Development";
   } else if (score >= 1) {
+    return "Recommended learning track for TechnicalAptitude: Product Design";
+  } else if (score >= 0.5) {
     return "Recommended learning track for TechnicalAptitude: User Experience (UX) Design";
-  } else {
-    return "Recommended learning track for TechnicalAptitude: Cyber Security, Data Science, Product Management, Mobile App Development";
+  }
+  else {
+    return "Recommended learning track for TechnicalAptitude: Product Management";
   }
 }
-  function recommendSkillsAssessmentLearningTrack(score) {
-    if (score >= 2) {
-      return "Recommended learning track for SkillsAssessment: Software Development, Product Management, Mobile App Development";
-    } else if (score >= 1) {
-      return "Recommended learning track for SkillsAssessment: 3D Animation Skills, Product Design,";
-    } else {
-      return "Recommendation available for SkillsAssessment: Cyber Security, Data Science";
-    }
+function recommendSkillsAssessmentLearningTrack(score) {
+  if (score >= 2) {
+    return "Recommended learning track for SkillsAssessment: Software Development, Mobile App Development";
+  } else if (score >= 1.5) {
+    return "Recommended learning track for SkillsAssessment: Cyber Security,";
+  } else if (score >= 1) {
+    return "Recommended learning track for SkillsAssessment: User Experience (UX) Design";
+  } else if (score >= 0.5) {
+    return "Recommended learning track for SkillsAssessment: 3D Design";
   }
+  else {
+    return "Recommendation available for SkillsAssessment: User Experience (UX) Design";
+  }
+}
