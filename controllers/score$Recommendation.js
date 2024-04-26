@@ -234,7 +234,7 @@ function recommendOpennessLearningTrack(score) {
     return "Recommended learning track for Openness: Data Science";
   }
   else {
-    return "Recommended learning track for Openness: Product Management";
+    return "No recommendation available";
   }
 }
 
@@ -250,7 +250,7 @@ function recommendConscientiousnessLearningTrack(score) {
     return "Recommended learning track for Conscientiousness: Product Design";
   }
   else {
-    return "Recommended learning track for Conscientiousness: Cyber Security";
+    return "No recommendation available";
   }
 }
 
@@ -297,7 +297,7 @@ function recommendImaginationLearningTrack(score) {
     return "Recommended learning track for Imagination: 3D Animation";
   }
   else {
-    return "Recommended learning track for Imagination:  Game Development";
+    return "No recommendation available";
   }
 }
 
@@ -312,7 +312,7 @@ function recommendTechnicalAptitudeLearningTrack(score) {
     return "Recommended learning track for TechnicalAptitude: User Experience (UX) Design";
   }
   else {
-    return "Recommended learning track for TechnicalAptitude: Product Management";
+    return "No recommendation available";
   }
 }
 function recommendSkillsAssessmentLearningTrack(score) {
@@ -326,6 +326,6 @@ function recommendSkillsAssessmentLearningTrack(score) {
     return "Recommended learning track for SkillsAssessment: 3D Design";
   }
   else {
-    return "Recommendation available for SkillsAssessment: User Experience (UX) Design";
+    return "No recommendation available";
   }
 }
