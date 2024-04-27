@@ -21,8 +21,10 @@ exports.getAllQuestions = async (req, res) => {
 // Create a new question
 exports.createQuestion = async (req, res) => {
 	try {
+		// Todo: run request body validations using a library like zod or joi or express-validator
 		const { image_path, question_text, option1, option2, option3, option4, correct_option, category, questionNo } =
 			req.body;
+
 		const sql =
 			"INSERT INTO questions (image_path, question_text, option1, option2, option3, option4, correct_option, category, questionNo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		const values = [
@@ -36,6 +38,7 @@ exports.createQuestion = async (req, res) => {
 			category,
 			questionNo,
 		];
+
 		const [rows] = await pool.execute(sql, values);
 
 		if (rows) {
@@ -45,8 +48,8 @@ exports.createQuestion = async (req, res) => {
 			return res.status(500).json({ error: "error creating question" });
 		}
 	} catch (error) {
-		console.log(error);
-		return res.status(500).json({ error: "Internal server error" });
+		console.error({ error });
+		return res.status(500).json({ error: "Internal server error", message: error.message });
 	}
 };
 
