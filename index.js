@@ -1,5 +1,5 @@
 const express = require("express");
-require("dotenv");
+require("dotenv").config();
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 	res.send("welcome to CareerPASS API");
 });
 
-const PORT = process.env.PORT || 8081;
+const PORT = Number(process.env.PORT || 8081);
 app.listen(PORT, () => {
-	console.log("server running on port:", PORT);
+	console.log("server running on port", PORT);
 });
