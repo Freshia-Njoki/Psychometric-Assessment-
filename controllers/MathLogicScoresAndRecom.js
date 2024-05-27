@@ -13,7 +13,7 @@ exports.calculateMathLogicScoresAndRecommendations = async (req, res) => {
     responses.forEach(response => {
       const { questionId, answer } = response;
       const { correctOption, category } = getQuestionInfo(rows, questionId);
-      console.log(`Question ID: ${questionId}, Answer: ${answer}, Correct Option: ${correctOption}, Category: ${category}`);
+      // console.log(`Question ID: ${questionId}, Answer: ${answer}, Correct Option: ${correctOption}, Category: ${category}`);
       
       // Compare answers and update scores
       if (answer && correctOption && answer.toString() === correctOption.toString()) {

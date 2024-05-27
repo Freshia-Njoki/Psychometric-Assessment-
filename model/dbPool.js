@@ -3,7 +3,7 @@ const mysql = require("mysql2/promise");
 const pool = mysql.createPool({
 	connectionLimit: 10,
 	host: process.env.HOST,
-	user: process.env.DB_USER,
+	user: process.env.USER,
 	password: process.env.PASSWORD,
 	database: process.env.DB,
 });
