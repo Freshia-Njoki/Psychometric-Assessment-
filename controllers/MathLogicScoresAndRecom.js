@@ -25,42 +25,46 @@ exports.calculateMathLogicScoresAndRecommendations = async (req, res) => {
       }
     });
 
-    const mathLearningTrack = recommendMathLearningTrack(mathScore);
-    const logicalLearningTrack = recommendLogicalLearningTrack(logicalScore);
-    res.json({ mathScore, logicalScore, mathLearningTrack, logicalLearningTrack });
+    // const mathLearningTrack = recommendMathLearningTrack(mathScore);
+    // const logicalLearningTrack = recommendLogicalLearningTrack(logicalScore);
+
+
+    //res.json({ mathScore, logicalScore, mathLearningTrack, logicalLearningTrack });
+    res.json({ mathScore, logicalScore});
+
   } catch (error) {
     console.error("Error calculating scores and recommendations:", error);
     res.status(500).json({ error: 'Error calculating scores and recommendations' });
   }
 };
 
-// Helper function to recommend learning track based on mathematical aptitude score
-const recommendMathLearningTrack = (mathScore) => {
-  let learningTrack = '';
-  if (mathScore >= 7) {
-    learningTrack = 'Mobile App, Product Management, Cyber Security, Data Science';
-  } else if (mathScore >= 4) {
-    learningTrack = 'Software Development, Blockchain, Mobile Application';
-  } else {
-    learningTrack = ' 3D Animation Skills, Product Design';
-  }
+// // Helper function to recommend learning track based on mathematical aptitude score
+// const recommendMathLearningTrack = (mathScore) => {
+//   let learningTrack = '';
+//   if (mathScore >= 7) {
+//     learningTrack = 'Mobile App, Product Management, Cyber Security, Data Science';
+//   } else if (mathScore >= 4) {
+//     learningTrack = 'Software Development, Blockchain, Mobile Application';
+//   } else {
+//     learningTrack = ' 3D Animation Skills, Product Design';
+//   }
 
-  return learningTrack;
-};
+//   return learningTrack;
+// };
 
-// Helper function to recommend learning track based on logical reasoning score
-const recommendLogicalLearningTrack = (logicalScore) => {
-  let learningTrack = '';
-  if (logicalScore >= 7) {
-    learningTrack = 'Software Development, Blockchain, Cyber Security, Data Science';
-  } else if (logicalScore >= 4) {
-    learningTrack = '3D Animation Skills, Product Design, Software Development, Mobile Application';
-  } else {
-    learningTrack = 'Mobile App, Product Management';
-  }
+// // Helper function to recommend learning track based on logical reasoning score
+// const recommendLogicalLearningTrack = (logicalScore) => {
+//   let learningTrack = '';
+//   if (logicalScore >= 7) {
+//     learningTrack = 'Software Development, Blockchain, Cyber Security, Data Science';
+//   } else if (logicalScore >= 4) {
+//     learningTrack = '3D Animation Skills, Product Design, Software Development, Mobile Application';
+//   } else {
+//     learningTrack = 'Mobile App, Product Management';
+//   }
 
-  return learningTrack;
-};
+//   return learningTrack;
+// };
 
 // Helper function to get the correct option and category for a question
 const getQuestionInfo = (rows, questionId) => {
