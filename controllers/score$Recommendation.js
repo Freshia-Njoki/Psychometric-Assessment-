@@ -78,13 +78,13 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
 
     // Calculate total score for all categories based on selected options
     responses.forEach(response => {
-      const { question_id, selected_option } = response;
-      const category = getCategory(rows, question_id);
+      const { questionid, selected_option } = response;
+      const category = getCategory(rows, questionid);
       //totalScore += calculateScore(selectedOption, category);
 
       switch (category) {
         case 'Mathematical Aptitude':
-          score = calculateMathsaptitude(question_id,selected_option, correctAnswers);
+          score = calculateMathsaptitude(questionid,selected_option, correctAnswers);
           if (score === 1){
 
             mathAptitudeScore++;
@@ -92,7 +92,7 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
           break;
         case 'Logical Reasoning':
 
-          logicalScore += calculateLogical(question_id,selected_option,correctAnswers);
+          logicalScore += calculateLogical(questionid,selected_option,correctAnswers);
           break;
 
         case 'Openness to Experience':
@@ -121,16 +121,16 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
           technicalaptotalScore += calculateTechnicalAptitudeScore(selected_option);
           break;
         case 'Skills Assessment':
-          if (question_id === 55){
+          if (questionid === 55){
             programmingScore = calculateProgrammingScore(selected_option);
           }
-          if (question_id === 54){
+          if (questionid === 54){
             designsoftwareScore = calculateDesignSoftwareScore(selected_option);
           }
-          if (question_id === 52){
+          if (questionid === 52){
             threeDSkillsScore = calculate3DSkillsScore(selected_option);
           }
-          if (question_id === 53){
+          if (questionid === 53){
             webDevconfidenceScore = calculateWebdevScore(selected_option);
           }
        

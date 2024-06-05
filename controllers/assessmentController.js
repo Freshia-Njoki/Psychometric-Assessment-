@@ -23,17 +23,17 @@ exports.submitAssessment = async (req, res) => {
 		// Calculate score and check correctness of each response
 		let score = 0;
 		const result = responses.map((response) => {
-			const { question_id, answer } = response;
+			const { questionid, answer } = response;
 			//Todo: Run validation checks for the questionId and answer
 			//
 			// Retrieve the correct option using the question ID provided by the user
-			const correctOption = correctAnswers[question_id];
-			console.log(`Question ID: ${question_id}, Answer: ${answer}, Correct Option: ${correctOption}`);
+			const correctOption = correctAnswers[questionid];
+			console.log(`Question ID: ${questionid}, Answer: ${answer}, Correct Option: ${correctOption}`);
 			const isCorrect = answer === correctOption;
 			if (isCorrect) {
 				score++;
 			}
-			return { question_id, answer, correctOption, isCorrect };
+			return { questionid, answer, correctOption, isCorrect };
 		});
 		res.json({ result, score });
 	} catch (error) {
