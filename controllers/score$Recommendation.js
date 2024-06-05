@@ -68,6 +68,8 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
       throw new Error("Invalid responses data.");
     }
     const query = "SELECT question_id, selected_option,correct_option, category FROM questions";
+    //const deleteQuery = "DELETE FROM questions WHERE question_id = 66";
+
     const [rows, fields] = await pool.query(query);
 
     const correctAnswers = {};
@@ -169,7 +171,8 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     
     const bestMatchDetails = findBestMatch(recommendation_learning_track_list, assessment_recommendation_score_list);
 
-                                          
+    //await pool.query(deleteQuery);
+                        
                                            
 
     res.json({
@@ -519,7 +522,7 @@ function calculateAgreeablenessAssertivenessScore(selectedOption) {
     'Actively seek resolutions and compromises.': 4,
     'Attempt to find a middle ground.': 3,
     'Tend to go along with the majority opinions.': 2,
-    'Prefer to avoid conflicts.': 1
+    'Prefer to avoid conflicts': 1
 
   };
   return optionScores[selectedOption];
@@ -556,7 +559,7 @@ function calculateTechnicalAptitudeScore(selectedOption) {
   const optionScores = {
     'Very comfortable, I enjoy exploring new software.': 5,
     'Somewhat comfortable, but I prefer familiar tools.': 4,
-    'Not very comfortable, I struggle with new technology.': 3,
+    'Not very comfortable, I struggle with new technology': 3,
     "Yes, I''ve created and customized programs or websites.": 5,
     "I've dabbled a bit but not extensively.": 4,
     "No, I haven't tried coding or web development.": 3,
