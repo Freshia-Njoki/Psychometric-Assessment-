@@ -78,13 +78,13 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
 
     // Calculate total score for all categories based on selected options
     responses.forEach(response => {
-      const { questionid, selected_option } = response;
-      const category = getCategory(rows, questionid);
+      const { questionId, answer } = response;
+      const category = getCategory(rows, questionId);
       //totalScore += calculateScore(selectedOption, category);
 
       switch (category) {
         case 'Mathematical Aptitude':
-          score = calculateMathsaptitude(questionid,selected_option, correctAnswers);
+          score = calculateMathsaptitude(questionId,answer, correctAnswers);
           if (score === 1){
 
             mathAptitudeScore++;
@@ -92,46 +92,46 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
           break;
         case 'Logical Reasoning':
 
-          logicalScore += calculateLogical(questionid,selected_option,correctAnswers);
+          logicalScore += calculateLogical(questionId,answer,correctAnswers);
           break;
 
         case 'Openness to Experience':
 
-          opennesstotalScore += calculateOpennessScore(selected_option);
+          opennesstotalScore += calculateOpennessScore(answer);
           break;
         case 'Conscientiousness':
 
-          conscientiousnestotalScore += calculateConscientiousnessScore(selected_option);
+          conscientiousnestotalScore += calculateConscientiousnessScore(answer);
           break;
         case 'Emotional Stability':
 
-          emotiontotalScore += calculateEmotionalStabilityScore(selected_option);
+          emotiontotalScore += calculateEmotionalStabilityScore(answer);
           break;
         case 'Agreeableness vs. Assertiveness':
 
-          aatotalScore += calculateAgreeablenessAssertivenessScore(selected_option);
+          aatotalScore += calculateAgreeablenessAssertivenessScore(answer);
           break;
         case 'Imagination':
           
 
-          imaginationtotalscore += calculateImaginationScore(selected_option);
+          imaginationtotalscore += calculateImaginationScore(answer);
           break;
         case 'Technical Aptitude':
 
-          technicalaptotalScore += calculateTechnicalAptitudeScore(selected_option);
+          technicalaptotalScore += calculateTechnicalAptitudeScore(answer);
           break;
         case 'Skills Assessment':
-          if (questionid === 55){
-            programmingScore = calculateProgrammingScore(selected_option);
+          if (questionId === 55){
+            programmingScore = calculateProgrammingScore(answer);
           }
-          if (questionid === 54){
-            designsoftwareScore = calculateDesignSoftwareScore(selected_option);
+          if (questionId === 54){
+            designsoftwareScore = calculateDesignSoftwareScore(answer);
           }
-          if (questionid === 52){
-            threeDSkillsScore = calculate3DSkillsScore(selected_option);
+          if (questionId === 52){
+            threeDSkillsScore = calculate3DSkillsScore(answer);
           }
-          if (questionid === 53){
-            webDevconfidenceScore = calculateWebdevScore(selected_option);
+          if (questionId === 53){
+            webDevconfidenceScore = calculateWebdevScore(answer);
           }
        
           break;
