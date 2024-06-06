@@ -14,6 +14,7 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     var imaginationtotalscore = 0
     var technicalaptotalScore = 0;
     var programmingScore, designsoftwareScore, threeDSkillsScore, webDevconfidenceScore = 0;
+    var total = 0;
 
     const recommendation_learning_track_list = [{name: "recommendation_1", value:["Average", "Excellent", "Open", "Highly", "Calm", 
                                             "Assertive", "Creative", "Technically Inclined", "Intermediate", 
@@ -68,7 +69,8 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
       throw new Error("Invalid responses data.");
     }
     const query = "SELECT question_id, selected_option,correct_option, category FROM questions";
-    //const deleteQuery = "DELETE FROM questions WHERE question_id = 66";
+    //const deleteQuery = "DELETE FROM questions WHERE question_id = 33";
+    //const updateQuery = "UPDATE questions SET correct_option = 10000 WHERE question_id=2 ";
 
     const [rows, fields] = await pool.query(query);
 
@@ -82,15 +84,11 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     responses.forEach(response => {
       const { questionId, answer } = response;
       const category = getCategory(rows, questionId);
-      //totalScore += calculateScore(selectedOption, category);
 
       switch (category) {
         case 'Mathematical Aptitude':
-          score = calculateMathsaptitude(questionId,answer, correctAnswers);
-          if (score === 1){
-
-            mathAptitudeScore++;
-          }
+          mathAptitudeScore += calculateMathsaptitude(questionId,answer, correctAnswers);
+         
           break;
         case 'Logical Reasoning':
 
@@ -138,7 +136,7 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
        
           break;
         default:
-          mathAptitudeScore = 0;
+          total = 0;
       }
 
     });
@@ -171,7 +169,15 @@ exports.calculateScoresAndRecommendations = async (req, res) => {
     
     const bestMatchDetails = findBestMatch(recommendation_learning_track_list, assessment_recommendation_score_list);
 
-    //await pool.query(deleteQuery);
+    //await pool.query(updateQuery);
+    // console.log("maths"+mathAptitudeScore)
+    // console.log("maths avg"+mathsapt)
+    // console.log("openness class"+open)
+
+    // console.log("technical"+technicalaptotalScore)
+    // console.log("openness avg"+technicalaptavg)
+    // console.log("openness class"+technical)
+
                         
                                            
 
@@ -400,6 +406,7 @@ function technicalAptitude(technicalaptotalScore) {
   }
 }
 
+
 function programmingskill(programmingScore) {
   if (programmingScore >= 4) {
     return "Advanced";
@@ -455,16 +462,20 @@ function webdevconfidence(webdevScore) {
 
 
 function calculateMathsaptitude(questionId, selectedoption, correctAnswers){
+  console.log("maths selected" + selectedoption)
+  console.log("maths correct" + correctAnswers[questionId])
+
   const correctOption = correctAnswers[questionId];
 
-			const isCorrect = selectedoption === correctOption;
-      console.log(isCorrect)
-			if (isCorrect) {
-				return 1;
-			}
-      else{
-        return 0;
-      }
+  const isCorrect = selectedoption === correctOption;
+  console.log(isCorrect)
+
+  if (isCorrect) {
+    return 1;
+  }
+  else{
+    return 0;
+  }
 
 }
 
@@ -488,6 +499,8 @@ function calculateOpennessScore(selectedOption) {
     'Disagree': 2,
     'Strongly Disagree': 1
   };
+      console.log("opennessoption score"+optionScores[selectedOption])
+
   return optionScores[selectedOption];
 }
 
@@ -550,6 +563,8 @@ function calculateImaginationScore(selectedOption) {
     'Use data analytics to identify optimal learning paths for individuals.': 3
 
   };
+  console.log("imagination option score"+optionScores[selectedOption])
+
   return optionScores[selectedOption];
 }
 
@@ -557,6 +572,7 @@ function calculateImaginationScore(selectedOption) {
 
 function calculateTechnicalAptitudeScore(selectedOption) {
   const optionScores = {
+
     'Very comfortable, I enjoy exploring new software.': 5,
     'Somewhat comfortable, but I prefer familiar tools.': 4,
     'Not very comfortable, I struggle with new technology': 3,
@@ -573,6 +589,8 @@ function calculateTechnicalAptitudeScore(selectedOption) {
     'I research and seek help if needed but try to solve it myself.': 4,
     'I usually ask someone else to handle it.': 3
   };
+
+
   return optionScores[selectedOption];
 }
 
